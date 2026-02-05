@@ -15,6 +15,7 @@ members = [
     "lib/cimxml_export",
     "lib/cimxml_import",
     "py_maplib",
+    "lib/jelly",
 ]
 
 [workspace.package]
