@@ -802,7 +802,7 @@ class Model:
     def read(
         self,
         file_path: Union[str, Path],
-        format: LiteralType["ntriples", "turtle", "rdf/xml", "cim/xml", "json-ld"] = None,
+        format: LiteralType["ntriples", "turtle", "rdf/xml", "cim/xml", "json-ld", "jelly"] = None,
         base_iri: str = None,
         transient: bool = False,
         parallel: bool = None,
@@ -849,7 +849,7 @@ class Model:
     def reads(
         self,
         s: str,
-        format: LiteralType["ntriples", "turtle", "rdf/xml", "cim/xml", "json-ld"],
+        format: LiteralType["ntriples", "turtle", "rdf/xml", "cim/xml", "json-ld", "jelly"],
         base_iri: str = None,
         transient: bool = False,
         parallel: bool = None,

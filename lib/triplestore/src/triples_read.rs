@@ -33,12 +33,15 @@ use std::path::Path;
 use std::time::Instant;
 use tracing::{debug, instrument};
 
+use jelly::*;
+
 type MapType = HashMap<String, HashMap<String, (Vec<Subject>, Vec<Term>)>>;
 
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub enum ExtendedRdfFormat {
     Normal(RdfFormat),
     CIMXML,
+    Jelly,
 }
 
 impl Triplestore {
@@ -74,6 +77,8 @@ impl Triplestore {
             ExtendedRdfFormat::Normal(RdfFormat::JsonLd {
                 profile: JsonLdProfileSet::empty(),
             })
+        } else if path.extension() == Some("jelly".as_ref()) {
+            ExtendedRdfFormat::Jelly
         } else {
             todo!("Have not implemented file format {:?}", path);
         };

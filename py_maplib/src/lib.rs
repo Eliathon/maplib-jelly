@@ -1725,7 +1725,7 @@ fn resolve_normal_format(format: &str) -> Result<RdfFormat, PyMaplibError> {
 
 fn resolve_format(format: &str) -> Result<ExtendedRdfFormat, PyMaplibError> {
     match format.to_lowercase().as_str() {
-        "cim" | "cim/xml" | "cimxml" => Ok(ExtendedRdfFormat::CIMXML),
+        "cim" | "cim/xml" | "cimxml" | "jelly" => Ok(ExtendedRdfFormat::CIMXML),
         f => match resolve_normal_format(format) {
             Ok(o) => Ok(ExtendedRdfFormat::Normal(o)),
             Err(e) => Err(e),
