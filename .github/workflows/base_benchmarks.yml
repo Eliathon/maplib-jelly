@@ -1,6 +1,14 @@
+name: Benchmarking
+
 on:
   push:
-    branches: main
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+  MATURIN_VERSION: '1.9.4'
+  RUST_TOOLCHAIN: nightly-2026-04-01
+  PYTHON_VERSION: '3.12'
 
 jobs:
   benchmark_base_branch:
@@ -14,20 +22,36 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: DataTreehouse/maplib_benches
-          path: maplib-bench-test
+          path: maplib_benches
           ref: main
           ssh-key: ${{ secrets.BENCHES_KEY }}
+          persist-credentials: false
+
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Rust
+        run: |
+          rustup toolchain install ${{ env.RUST_TOOLCHAIN }}
+          rustup default ${{ env.RUST_TOOLCHAIN }}
+
       - uses: Swatinem/rust-cache@v2
+
+      - name: Install dependencies
+        run: |
+           python -m venv .venv
+           source .venv/bin/activate
+           pip install --upgrade pip
+           pip install "maturin[patchelf]"==${{ env.MATURIN_VERSION }} pytest pytest-benchmark
+
       - name: Build py_maplib
         run: |
-          python -m venv .venv
           source .venv/bin/activate
-          pip install maturin pytest pytest-benchmark
           maturin develop --release -m py_maplib/Cargo.toml
+
       - uses: bencherdev/bencher@main
+
       - name: Track base branch benchmarks with Bencher
         run: |
           source .venv/bin/activate
@@ -45,4 +69,4 @@ jobs:
           --adapter python_pytest \
           --file results.json \
           --github-actions '${{ secrets.GITHUB_TOKEN }}' \
-          "pytest --benchmark-only --benchmark-json results.json maplib-bench-test"
+          "pytest --benchmark-only --benchmark-json results.json maplib_banches/tests/"
