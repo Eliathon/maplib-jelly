@@ -26,5 +26,4 @@ jobs:
           --error-on-alert \
           --adapter python_pytest \
           --file results.json "pytest --benchmark-json results.json benchmarks.py" \
-          --github-actions '${{ secrets.GITHUB_TOKEN }}' \
-          bencher mock
+          --github-actions '${{ secrets.GITHUB_TOKEN }}'
