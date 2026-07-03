@@ -27,4 +27,4 @@ jobs:
           --adapter python_pytest \
           --file results.json \
           --github-actions '${{ secrets.GITHUB_TOKEN }}'
-          "pytest --benchmark-json results.json benches/"
+          "pytest --benchmark-json results.json py_maplib/tests/"
