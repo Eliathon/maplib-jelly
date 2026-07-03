@@ -16,7 +16,8 @@ jobs:
           repository: DataTreehouse/maplib_benches
           path: maplib-bench-test
           ref: main
-      - uses: actions/checkout@v5
+          ssh-key: ${{ secrets.BENCHES_KEY }}
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - uses: Swatinem/rust-cache@v2
@@ -44,4 +45,4 @@ jobs:
           --adapter python_pytest \
           --file results.json \
           --github-actions '${{ secrets.GITHUB_TOKEN }}' \
-          "pytest --benchmark-only --benchmark-json results.json py_maplib/tests/"
+          "pytest --benchmark-only --benchmark-json results.json maplib-bench-test"
