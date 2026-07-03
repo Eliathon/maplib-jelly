@@ -25,5 +25,6 @@ jobs:
           --thresholds-reset \
           --error-on-alert \
           --adapter python_pytest \
-          --file results.json "pytest --benchmark-json results.json benchmarks.py" \
+          --file results.json \
           --github-actions '${{ secrets.GITHUB_TOKEN }}'
+          "pytest --benchmark-json results.json benches/"
