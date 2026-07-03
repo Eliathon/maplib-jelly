@@ -27,7 +27,7 @@ jobs:
           repository: DataTreehouse/maplib_benches
           path: maplib_benches
           ref: main
-          ssh-key: ${{ secrets.BENCHES_KEY }}
+          ssh-key: ${{ secrets.BENCHES_DEPLOY_KEY }}
           persist-credentials: false
 
       - uses: actions/setup-python@v5
