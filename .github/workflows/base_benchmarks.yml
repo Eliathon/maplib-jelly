@@ -10,9 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          python-version: "3.12"
+      - uses: Swatinem/rust-cache@v2
+      - name: Build py_maplib
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install maturin pytest pytest-benchmark
+          maturin develop --release -m py_maplib/Cargo.toml
       - uses: bencherdev/bencher@main
       - name: Track base branch benchmarks with Bencher
         run: |
+          source .venv/bin/activate
           bencher run \
           --project maplib-bench-test \
           --key '${{ secrets.BENCHER_API_KEY }}' \
@@ -26,5 +36,5 @@ jobs:
           --error-on-alert \
           --adapter python_pytest \
           --file results.json \
-          --github-actions '${{ secrets.GITHUB_TOKEN }}'
-          "pytest --benchmark-json results.json py_maplib/tests/"
+          --github-actions '${{ secrets.GITHUB_TOKEN }}' \
+          "pytest --benchmark-only --benchmark-json results.json py_maplib/tests/"
