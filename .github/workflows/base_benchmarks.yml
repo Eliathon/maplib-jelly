@@ -43,10 +43,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-           python -m venv .venv
-           source .venv/bin/activate
-           pip install --upgrade pip
-           pip install "maturin[patchelf]"==${{ env.MATURIN_VERSION }} pytest pytest-benchmark
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install "maturin[patchelf]"==${{ env.MATURIN_VERSION }} pytest pytest-benchmark
+          pip install -r maplib_benches/tests/requirements.txt
 
       - name: Build py_maplib
         run: |
