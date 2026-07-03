@@ -14,7 +14,7 @@ jobs:
       - name: Track base branch benchmarks with Bencher
         run: |
           bencher run \
-          --project project-abc4567-wxyz123456789 \
+          --project maplib-bench-test \
           --key '${{ secrets.BENCHER_API_KEY }}' \
           --branch main \
           --testbed ubuntu-latest \
