@@ -28,7 +28,19 @@ jobs:
           path: maplib_benches
           ref: main
           ssh-key: ${{ secrets.BENCHES_DEPLOY_KEY }}
-          persist-credentials: false
+
+      - name: LFS cache key
+        working-directory: maplib_benches
+        run: git lfs ls-files --long | cut -d' ' -f1 | sort > .lfs-oids
+
+      - uses: actions/cache@v4
+        with:
+          path: maplib_benches/.git/lfs
+          key: lfs-${{ hashFiles('maplib_benches/.lfs-oids') }}
+
+      - name: Pull LFS objects
+        working-directory: maplib_benches
+        run: git lfs pull
 
       - uses: actions/setup-python@v5
         with:
@@ -70,7 +82,7 @@ jobs:
           --threshold-upper-boundary 0.99 \
           --thresholds-reset \
           --error-on-alert \
-          --adapter python_pytest \
-          --file results.json \
+          --adapter json \
+          --file bmf.json \
           --github-actions '${{ secrets.GITHUB_TOKEN }}' \
-          "pytest --benchmark-only --benchmark-json results.json maplib_benches/tests/"
+          "pytest maplib_benches/tests/"
