@@ -3,6 +3,8 @@ name: Benchmarking
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -36,7 +38,7 @@ jobs:
           rustup toolchain install ${{ env.RUST_TOOLCHAIN }}
           rustup default ${{ env.RUST_TOOLCHAIN }}
 
-      - uses: Swatinem/rust-cache@v2
+#      - uses: ./.github/actions/combine-sources
 
       - name: Install dependencies
         run: |
